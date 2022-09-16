@@ -5,12 +5,22 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.fluentt.javafxcharts.HelloController">
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<VBox alignment="CENTER" prefHeight="578.0" prefWidth="634.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
+    <children>
+        <Label text="Primary View" />
+        <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
+        <TableView fx:id="mTable" prefHeight="400.0" prefWidth="400.0">
+            <columns>
+                <TableColumn id="mid" fx:id="time" prefWidth="190.0" text="Time" />
+                <TableColumn id="task" fx:id="location" prefWidth="190.0" text="Location" />
+                <TableColumn id="start" fx:id="parameter_name" prefWidth="90" text="Parameter" />
+                <TableColumn id="end" fx:id="parameter_value"  text="Value" />
+            </columns>
+        </TableView>
+    </children>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
 </VBox>
