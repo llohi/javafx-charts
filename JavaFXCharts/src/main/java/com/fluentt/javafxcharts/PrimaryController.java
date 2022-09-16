@@ -10,6 +10,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,11 +27,19 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class PrimaryController implements Initializable {
 
     @FXML
     public Button fetchButton;
+
+    @FXML
+    public LineChart<String, Double> mChart;
+
+    public CategoryAxis xAxis;
+    public NumberAxis yAxis;
+
     @FXML
     private TableView<BsWfsElement> mTable;
 
@@ -52,10 +63,29 @@ public class PrimaryController implements Initializable {
         List<BsWfsElement> data = ServerRequest.getData(FMIUrl.getForecastURL(
                 61.49911, 23.78712,
                 "2022-09-17T16:00:00Z", "2022-09-17T18:00:00Z",
-                1,
-                true, true));
+                10,
+                true, false));
         ObservableList<BsWfsElement> obsData = FXCollections.observableList(data);
         mTable.setItems(obsData);
+        initChart(obsData);
+    }
+
+    private void initChart(ObservableList<BsWfsElement> obsData) {
+
+        // Configure x-axis
+        //xAxis = new CategoryAxis();
+        xAxis.setLabel("Time");
+        xAxis.setCategories(
+                FXCollections.observableList(
+                        obsData.stream()
+                                .map(BsWfsElement::getTime)
+                                .collect(Collectors.toList())));
+
+        // Configure y-axis
+        //yAxis = new NumberAxis();
+        yAxis.setLabel("Temperature");
+
+        //mChart = new LineChart(xAxis, yAxis);
     }
 
     /**
