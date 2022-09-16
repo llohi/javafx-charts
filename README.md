@@ -1,5 +1,5 @@
 # javafx-charts
-Playing around with JavaFX Charts using weather data from the Finnish Meteorological Institute public API.<br /><br />
+Playing around with JavaFX Charts using weather data from the Finnish Meteorological Institute public API.<br />
 
 To run the program navigate to the root of this repo and run the following commands:
 ```
