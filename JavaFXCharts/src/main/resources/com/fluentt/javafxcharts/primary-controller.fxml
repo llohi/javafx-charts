@@ -12,21 +12,28 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.layout.HBox?>
-<VBox alignment="CENTER" prefHeight="700.0" prefWidth="1200.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
+<?import javafx.scene.chart.ScatterChart?>
+<?import javafx.scene.chart.BarChart?>
+<VBox alignment="CENTER" prefHeight="900.0" prefWidth="1100.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
     <children>
-        <Label text="Primary View" />
-        <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
-        <HBox>
-            <TableView fx:id="mTable" maxHeight="400.0" maxWidth="600.0">
+
+        <HBox alignment="CENTER">
+            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" spacing="20">
+                <Label text="Primary View" />
+                <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
+            </VBox>
+            <TableView fx:id="mTable" prefHeight="500.0" prefWidth="500.0">
                 <columns>
-                    <TableColumn id="mid" fx:id="time" minWidth="200.0" text="Time" />
-                    <TableColumn id="task" fx:id="location" minWidth="200.0" text="Location" />
+                    <TableColumn id="mid" fx:id="time" minWidth="160.0" text="Time" />
+                    <TableColumn id="task" fx:id="location" minWidth="160.0" text="Location" />
                     <TableColumn id="start" fx:id="parameter_name" minWidth="100" text="Parameter" />
-                    <TableColumn id="end" fx:id="parameter_value" maxWidth="70"  text="Value" />
+                    <TableColumn id="end" fx:id="parameter_value" maxWidth="60"  text="Value" />
                 </columns>
             </TableView>
+        </HBox>
 
-            <LineChart fx:id="mChart" minHeight="400" maxHeight="400.0" minWidth="500" maxWidth="500.0">
+        <HBox alignment="CENTER">
+            <LineChart fx:id="mChart">
                 <xAxis>
                     <CategoryAxis fx:id="xAxis" side="BOTTOM" />
                 </xAxis>
@@ -34,6 +41,16 @@
                     <NumberAxis fx:id="yAxis" side="LEFT" />
                 </yAxis>
             </LineChart>
+
+            <ScatterChart fx:id="mScatter">
+                <xAxis>
+                    <CategoryAxis fx:id="xScatter" side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="yScatter" side="LEFT" />
+                </yAxis>
+            </ScatterChart>
+
         </HBox>
 
     </children>

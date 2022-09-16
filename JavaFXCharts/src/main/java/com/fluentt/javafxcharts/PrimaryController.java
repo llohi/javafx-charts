@@ -11,10 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -42,6 +39,9 @@ public class PrimaryController implements Initializable {
 
     public CategoryAxis xAxis;
     public NumberAxis yAxis;
+    public ScatterChart<String, Double> mScatter;
+    public CategoryAxis xScatter;
+    public NumberAxis yScatter;
 
     @FXML
     private TableView<BsWfsElement> mTable;
@@ -74,12 +74,6 @@ public class PrimaryController implements Initializable {
 
     private void initChart(ObservableList<BsWfsElement> obsData) {
 
-        mChart.setTitle("Temperature Forecast Data");
-        mChart.setLegendVisible(false);
-        mChart.setCreateSymbols(false);
-
-        // Configure x-axis
-        xAxis.setLabel("Time");
 
         xAxis.setCategories(
                 FXCollections.observableList(
@@ -87,8 +81,11 @@ public class PrimaryController implements Initializable {
                                 .map(BsWfsElement::getTime)
                                 .collect(Collectors.toList())));
 
-        // Configure y-axis
-        yAxis.setLabel("Temperature");
+        xScatter.setCategories(
+                FXCollections.observableList(
+                        obsData.stream()
+                                .map(BsWfsElement::getTime)
+                                .collect(Collectors.toList())));
 
         // Add data to the chart
         XYChart.Series<String, Double> tempSeries = new XYChart.Series<>();
@@ -96,14 +93,8 @@ public class PrimaryController implements Initializable {
         for (BsWfsElement e : obsData)
             tempSeries.getData().add(new XYChart.Data<>(e.getTime(), e.getParameter_value()));
 
-        // TODO: 9/16/2022 Make it so that these values are in relation to the min/max fetched parameter values.
-        yAxis.setAutoRanging(false);
-        yAxis.setLowerBound(0);
-        yAxis.setUpperBound(15);
-        yAxis.setTickUnit(3);
-        mChart.autosize();
-
         mChart.getData().add(tempSeries);
+        mScatter.getData().add(tempSeries);
     }
 
     /**
@@ -133,5 +124,29 @@ public class PrimaryController implements Initializable {
                 m -> (m.getValue() != null) ?
                         new SimpleStringProperty(""+m.getValue().getParameter_value()) :
                         new SimpleStringProperty("No parameter value"));
+
+        mChart.setTitle("Temperature Forecast Data");
+        mChart.setLegendVisible(false);
+        mChart.setCreateSymbols(false);
+
+        xAxis.setLabel("Time");
+        yAxis.setLabel("Temperature");
+        // TODO: 9/16/2022 Make it so that these values are in relation to the min/max fetched parameter values.
+        yAxis.setAutoRanging(false);
+        yAxis.setLowerBound(-15);
+        yAxis.setUpperBound(15);
+        yAxis.setTickUnit(3);
+
+        mScatter.setTitle("Temperature Forecast Data");
+        mScatter.setLegendVisible(false);
+
+        xScatter.setLabel("Time");
+        yScatter.setLabel("Temperature");
+        // TODO: 9/16/2022 Make it so that these values are in relation to the min/max fetched parameter values.
+        yScatter.setAutoRanging(false);
+        yScatter.setLowerBound(0);
+        yScatter.setUpperBound(15);
+        yScatter.setTickUnit(3);
+
     }
 }
