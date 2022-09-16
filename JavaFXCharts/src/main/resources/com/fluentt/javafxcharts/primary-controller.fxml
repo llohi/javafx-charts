@@ -12,7 +12,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.layout.HBox?>
-<VBox alignment="CENTER" prefHeight="578.0" prefWidth="1200.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="1200.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
     <children>
         <Label text="Primary View" />
         <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
@@ -26,7 +26,7 @@
                 </columns>
             </TableView>
 
-            <LineChart fx:id="mChart" maxHeight="500.0" maxWidth="700.0">
+            <LineChart fx:id="mChart" minHeight="400" maxHeight="400.0" minWidth="500" maxWidth="500.0">
                 <xAxis>
                     <CategoryAxis fx:id="xAxis" side="BOTTOM" />
                 </xAxis>

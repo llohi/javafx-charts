@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.CategoryAxis;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import org.xml.sax.SAXException;
 
@@ -60,11 +62,10 @@ public class PrimaryController implements Initializable {
     private void fetchData() throws IOException, XPathExpressionException,
                                     ParserConfigurationException, SAXException {
 
-        // Get forecast from 17/9/2022 4:00 - 6:00 pm at coords 61.49911, 23.78712.
         List<BsWfsElement> data = ServerRequest.getData(FMIUrl.getForecastURL(
                 61.49911, 23.78712,
-                "2022-09-17T16:00:00Z", "2022-09-17T18:00:00Z",
-                1,
+                "2022-09-17T16:00:00Z", "2022-09-18T16:00:00Z",
+                60,
                 true, false));
         ObservableList<BsWfsElement> obsData = FXCollections.observableList(data);
         mTable.setItems(obsData);
@@ -73,8 +74,13 @@ public class PrimaryController implements Initializable {
 
     private void initChart(ObservableList<BsWfsElement> obsData) {
 
+        mChart.setTitle("Temperature Forecast Data");
+        mChart.setLegendVisible(false);
+        mChart.setCreateSymbols(false);
+
         // Configure x-axis
         xAxis.setLabel("Time");
+
         xAxis.setCategories(
                 FXCollections.observableList(
                         obsData.stream()
@@ -85,12 +91,19 @@ public class PrimaryController implements Initializable {
         yAxis.setLabel("Temperature");
 
         // Add data to the chart
-        XYChart.Series<String, Double> series = new XYChart.Series<>();
+        XYChart.Series<String, Double> tempSeries = new XYChart.Series<>();
+        tempSeries.setName("Temperature");
         for (BsWfsElement e : obsData)
-            series.getData().add(new XYChart.Data<>(e.getTime(), e.getParameter_value()));
+            tempSeries.getData().add(new XYChart.Data<>(e.getTime(), e.getParameter_value()));
 
-        mChart.getData().add(series);
+        // TODO: 9/16/2022 Make it so that these values are in relation to the min/max fetched parameter values.
+        yAxis.setAutoRanging(false);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(15);
+        yAxis.setTickUnit(3);
+        mChart.autosize();
 
+        mChart.getData().add(tempSeries);
     }
 
     /**
