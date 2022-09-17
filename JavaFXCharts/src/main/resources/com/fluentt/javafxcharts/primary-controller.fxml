@@ -19,20 +19,21 @@
 <HBox alignment="CENTER" prefHeight="700.0" prefWidth="1300.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
     <VBox maxHeight="650.0" maxWidth="600.0">
         <VBox prefHeight="200.0" prefWidth="600.0" spacing="20">
-            <Label text="Primary View" />
             <HBox spacing="20">
+                <Label text="Start time: " />
                 <DatePicker fx:id="startDate"/>
                 <TextField fx:id="startTime" promptText="hh:mm:ss"/>
             </HBox>
             <HBox spacing="20">
+                <Label text="End time: " />
                 <DatePicker fx:id="endDate"/>
                 <TextField fx:id="endTime" promptText="hh:mm:ss"/>
             </HBox>
             <HBox spacing="20">
                 <Label text="Timestep: "/>
                 <TextField fx:id="timeStep"/>
+                <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
             </HBox>
-            <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
         </VBox>
         <LineChart fx:id="mChart" prefHeight="450.0" prefWidth="600.0">
             <xAxis>
