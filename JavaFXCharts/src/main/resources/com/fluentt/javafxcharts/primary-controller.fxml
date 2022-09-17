@@ -16,9 +16,9 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
-<HBox alignment="CENTER" prefHeight="900.0" prefWidth="1300.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
-    <VBox maxHeight="800.0" maxWidth="600.0">
-        <VBox prefHeight="250.0" prefWidth="600.0" spacing="20">
+<HBox alignment="CENTER" prefHeight="700.0" prefWidth="1300.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
+    <VBox maxHeight="650.0" maxWidth="600.0">
+        <VBox prefHeight="200.0" prefWidth="600.0" spacing="20">
             <Label text="Primary View" />
             <HBox spacing="20">
                 <DatePicker fx:id="startDate"/>
@@ -34,7 +34,7 @@
             </HBox>
             <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
         </VBox>
-        <LineChart fx:id="mChart" prefHeight="550.0" prefWidth="600.0">
+        <LineChart fx:id="mChart" prefHeight="450.0" prefWidth="600.0">
             <xAxis>
                 <CategoryAxis fx:id="xAxis" side="BOTTOM" />
             </xAxis>
@@ -43,7 +43,7 @@
             </yAxis>
         </LineChart>
     </VBox>
-    <TableView fx:id="mTable" maxHeight="800.0" maxWidth="500.0">
+    <TableView fx:id="mTable" maxHeight="600.0" maxWidth="500.0">
         <columns>
             <TableColumn id="mid" fx:id="time" minWidth="160.0" text="Time" />
             <TableColumn id="task" fx:id="location" minWidth="160.0" text="Location" />
