@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
@@ -12,8 +11,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.chart.ScatterChart?>
-<?import javafx.scene.chart.BarChart?>
+
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
@@ -24,6 +22,8 @@
             <HBox spacing="20">
                 <Label text="City: "  prefWidth="90" />
                 <ComboBox fx:id="cityComboBox" prefWidth="150" />
+                <Label fx:id="latitudeLabel" prefWidth="90" />
+                <Label fx:id="longitudeLabel" prefWidth="90" />
             </HBox>
             <HBox spacing="20">
                 <Label text="Start time: "  prefWidth="90" />
