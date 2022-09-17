@@ -22,12 +22,12 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PrimaryController implements Initializable {
+
+    private static Map<String, double[]> CITIES;
 
     @FXML
     public Button fetchButton;
@@ -42,6 +42,9 @@ public class PrimaryController implements Initializable {
     public TextField startTime;
     public TextField endTime;
     public TextField timeStep;
+    public ComboBox<String> cityComboBox;
+    public CheckBox showTemperature;
+    public CheckBox showWindspeed;
 
     @FXML
     private TableView<BsWfsElement> mTable;
@@ -81,15 +84,17 @@ public class PrimaryController implements Initializable {
         String end = endDate.getValue().format(DateTimeFormatter.ISO_DATE) +
                      "T" + endTime.getText() + "Z";
 
+        double[] coords = CITIES.get(cityComboBox.getValue());
+
         // Get data from the API
         ObservableList<BsWfsElement> data =
                 FXCollections.observableList(    // <-- Get data as ObservableList
                         ServerRequest.getData(     // <-- Connect to API
                             FMIUrl.getForecastURL(   // <-- Get the url with parameters
-                                    61.49911, 23.78712,
+                                    coords[0], coords[1],
                                     start, end,
                                     Integer.parseInt(timeStep.getText()),
-                                    true, true)
+                                    showTemperature.isSelected(), showWindspeed.isSelected())
                 ));
         mTable.setItems(data);
         initCharts(data);
@@ -100,8 +105,8 @@ public class PrimaryController implements Initializable {
         // Add data to the chart
         XYChart.Series<String, Double> tempSeries = new XYChart.Series<>();
         XYChart.Series<String, Double> windSeries = new XYChart.Series<>();
-        tempSeries.setName("Temperature");
-        windSeries.setName("Windspeed");
+        tempSeries.setName("Temperature °C");
+        windSeries.setName("Windspeed m/s");
         for (BsWfsElement e : obsData) {
             if (e.getParameter_name().equals("temperature"))
                 tempSeries.getData().add(new XYChart.Data<>(formatIsoDate(e.getTime()),
@@ -111,7 +116,11 @@ public class PrimaryController implements Initializable {
                                                             e.getParameter_value()));
         }
 
-        mChart.getData().addAll(tempSeries, windSeries);
+        if (tempSeries.getData().size() != 0)
+            mChart.getData().add(tempSeries);
+
+        if (windSeries.getData().size() != 0)
+            mChart.getData().add(windSeries);
     }
 
     /**
@@ -121,6 +130,18 @@ public class PrimaryController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        CITIES = new HashMap<>() {{
+            put("Helsinki", new double[]{60.169444, 24.935278});
+            put("Espoo", new double[]{60.205, 24.651944});
+            put("Vantaa", new double[]{60.293889, 25.040833});
+            put("Tampere", new double[]{61.498889, 23.786944});
+            put("Rovaniemi", new double[]{66.5, 25.716667});
+        }};
+
+        cityComboBox.setItems(
+                FXCollections.observableList(
+                        new ArrayList<>(CITIES.keySet())));
 
         time.setCellValueFactory(
                 m -> (m.getValue() != null) ?
@@ -151,7 +172,7 @@ public class PrimaryController implements Initializable {
 
     private String formatIsoDate(String date) {
         return date.substring(5)
-                    .replace("T", "\n")
+                   .replace("T", "\n")
                    .replace("Z", "");
     }
 }

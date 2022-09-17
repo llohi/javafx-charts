@@ -1,5 +1,5 @@
 .root{
-    -fx-background-color: linear-gradient(to bottom right, #43cea2, #185a9d);
+    -fx-background-color: linear-gradient(to bottom right, #2196F3 0%, #673AB7 100%);
     -fx-text-fill: white;
 }
 .button {
@@ -39,6 +39,7 @@
 .table-view .table-cell{
     -fx-border-color: transparent;
     -fx-padding: 2 0 2 10px;
+    -fx-text-fill: white;
 }
 .table-row-cell: hover {
     -fx-background-color: #93E94560;
@@ -88,4 +89,14 @@
 
 .chart-legend {
    -fx-background-color:  transparent;
+   -fx-padding: 20;
+}
+
+.axis {
+    -fx-tick-label-fill: white;
+    -fx-font-family: Tahoma;
+}
+
+.axis-label {
+   -fx-text-fill: white;
 }

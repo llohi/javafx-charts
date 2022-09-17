@@ -16,22 +16,31 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.CheckBox?>
 <HBox alignment="CENTER" prefHeight="700.0" prefWidth="1300.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
     <VBox maxHeight="650.0" maxWidth="600.0">
         <VBox prefHeight="200.0" prefWidth="600.0" spacing="20">
             <HBox spacing="20">
-                <Label text="Start time: " />
-                <DatePicker fx:id="startDate"/>
-                <TextField fx:id="startTime" promptText="hh:mm:ss"/>
+                <Label text="City: "  prefWidth="90" />
+                <ComboBox fx:id="cityComboBox" prefWidth="150" />
             </HBox>
             <HBox spacing="20">
-                <Label text="End time: " />
-                <DatePicker fx:id="endDate"/>
-                <TextField fx:id="endTime" promptText="hh:mm:ss"/>
+                <Label text="Start time: "  prefWidth="90" />
+                <DatePicker fx:id="startDate" prefWidth="150" />
+                <TextField fx:id="startTime" promptText="hh:mm:ss" prefWidth="150" text="21:00:00" />
             </HBox>
             <HBox spacing="20">
-                <Label text="Timestep: "/>
-                <TextField fx:id="timeStep"/>
+                <Label text="End time: " prefWidth="90"  />
+                <DatePicker fx:id="endDate" prefWidth="150" />
+                <TextField fx:id="endTime" promptText="hh:mm:ss" prefWidth="150" text="21:00:00" />
+            </HBox>
+            <HBox spacing="20">
+                <Label text="Timestep: " prefWidth="90" />
+                <TextField fx:id="timeStep" prefWidth="150" text="60" />
+                <CheckBox fx:id="showTemperature" text="Temperature" textFill="white" />
+                <CheckBox fx:id="showWindspeed" text="Wind speed" textFill="white" />
+
                 <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
             </HBox>
         </VBox>
