@@ -2,6 +2,10 @@ package com.fluentt.javafxcharts.data;
 
 import java.util.Arrays;
 
+/**
+ * This class represents the data fetched from the Finnish Meteorological Institute API.
+ * @author J.L.
+ */
 public class BsWfsElement {
 
     private double[] pos;

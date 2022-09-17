@@ -20,6 +20,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+/**
+ * This class controls the user interface of the app.
+ * @author J.L.
+ */
 public class PrimaryController implements Initializable {
 
     private final static Map<String, double[]> CITIES = new HashMap<>() {{

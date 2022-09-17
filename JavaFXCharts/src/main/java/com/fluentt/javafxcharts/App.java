@@ -7,6 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class launches the app.
+ * @author J.L.
+ */
 public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
