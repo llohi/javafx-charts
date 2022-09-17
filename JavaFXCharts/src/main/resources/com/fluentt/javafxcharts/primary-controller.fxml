@@ -14,47 +14,42 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.chart.ScatterChart?>
 <?import javafx.scene.chart.BarChart?>
-<VBox alignment="CENTER" prefHeight="900.0" prefWidth="1100.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
-    <children>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<HBox alignment="CENTER" prefHeight="900.0" prefWidth="1300.0" spacing="20.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fluentt.javafxcharts.PrimaryController">
+    <VBox maxHeight="800.0" maxWidth="600.0">
+        <VBox prefHeight="250.0" prefWidth="600.0" spacing="20">
+            <Label text="Primary View" />
+            <HBox spacing="20">
+                <DatePicker fx:id="startDate"/>
+                <TextField fx:id="startTime" promptText="hh:mm:ss"/>
+            </HBox>
+            <HBox spacing="20">
+                <DatePicker fx:id="endDate"/>
+                <TextField fx:id="endTime" promptText="hh:mm:ss"/>
+            </HBox>
+            <HBox spacing="20">
+                <Label text="Timestep: "/>
+                <TextField fx:id="timeStep"/>
+            </HBox>
+            <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
+        </VBox>
+        <LineChart fx:id="mChart" prefHeight="550.0" prefWidth="600.0">
+            <xAxis>
+                <CategoryAxis fx:id="xAxis" side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis fx:id="yAxis" side="LEFT" />
+            </yAxis>
+        </LineChart>
+    </VBox>
+    <TableView fx:id="mTable" maxHeight="800.0" maxWidth="500.0">
+        <columns>
+            <TableColumn id="mid" fx:id="time" minWidth="160.0" text="Time" />
+            <TableColumn id="task" fx:id="location" minWidth="160.0" text="Location" />
+            <TableColumn id="start" fx:id="parameter_name" minWidth="100" text="Parameter" />
+            <TableColumn id="end" fx:id="parameter_value" maxWidth="60"  text="Value" />
+        </columns>
+    </TableView>
+</HBox>
 
-        <HBox alignment="CENTER">
-            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="500.0" spacing="20">
-                <Label text="Primary View" />
-                <Button fx:id="fetchButton" onAction="#fetchData" text="Fetch Data" />
-            </VBox>
-            <TableView fx:id="mTable" prefHeight="500.0" prefWidth="500.0">
-                <columns>
-                    <TableColumn id="mid" fx:id="time" minWidth="160.0" text="Time" />
-                    <TableColumn id="task" fx:id="location" minWidth="160.0" text="Location" />
-                    <TableColumn id="start" fx:id="parameter_name" minWidth="100" text="Parameter" />
-                    <TableColumn id="end" fx:id="parameter_value" maxWidth="60"  text="Value" />
-                </columns>
-            </TableView>
-        </HBox>
-
-        <HBox alignment="CENTER">
-            <LineChart fx:id="mChart">
-                <xAxis>
-                    <CategoryAxis fx:id="xAxis" side="BOTTOM" />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis fx:id="yAxis" side="LEFT" />
-                </yAxis>
-            </LineChart>
-
-            <ScatterChart fx:id="mScatter">
-                <xAxis>
-                    <CategoryAxis fx:id="xScatter" side="BOTTOM" />
-                </xAxis>
-                <yAxis>
-                    <NumberAxis fx:id="yScatter" side="LEFT" />
-                </yAxis>
-            </ScatterChart>
-
-        </HBox>
-
-    </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-</VBox>

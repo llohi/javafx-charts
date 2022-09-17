@@ -12,10 +12,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import org.xml.sax.SAXException;
@@ -24,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -39,9 +37,11 @@ public class PrimaryController implements Initializable {
 
     public CategoryAxis xAxis;
     public NumberAxis yAxis;
-    public ScatterChart<String, Double> mScatter;
-    public CategoryAxis xScatter;
-    public NumberAxis yScatter;
+    public DatePicker startDate;
+    public DatePicker endDate;
+    public TextField startTime;
+    public TextField endTime;
+    public TextField timeStep;
 
     @FXML
     private TableView<BsWfsElement> mTable;
@@ -62,39 +62,56 @@ public class PrimaryController implements Initializable {
     private void fetchData() throws IOException, XPathExpressionException,
                                     ParserConfigurationException, SAXException {
 
-        List<BsWfsElement> data = ServerRequest.getData(FMIUrl.getForecastURL(
-                61.49911, 23.78712,
-                "2022-09-17T16:00:00Z", "2022-09-18T16:00:00Z",
-                60,
-                true, false));
-        ObservableList<BsWfsElement> obsData = FXCollections.observableList(data);
-        mTable.setItems(obsData);
-        initChart(obsData);
+        if (startDate.getValue() == null || endDate.getValue() == null ||
+            startTime.getText().equals("") || endTime.getText().equals("") ||
+            timeStep.getText().equals(""))
+            return;
+
+        // TODO: 9/17/2022 Maybe create seperate function to check input parameters (string format etc)
+
+
+        // Clear all prior data
+        mTable.getItems().clear();
+        mChart.getData().clear();
+
+        // Format time intervals into ISO 8601
+        String start = startDate.getValue().format(DateTimeFormatter.ISO_DATE) +
+                       "T" + startTime.getText() + "Z";
+
+        String end = endDate.getValue().format(DateTimeFormatter.ISO_DATE) +
+                     "T" + endTime.getText() + "Z";
+
+        // Get data from the API
+        ObservableList<BsWfsElement> data =
+                FXCollections.observableList(    // <-- Get data as ObservableList
+                        ServerRequest.getData(     // <-- Connect to API
+                            FMIUrl.getForecastURL(   // <-- Get the url with parameters
+                                    61.49911, 23.78712,
+                                    start, end,
+                                    Integer.parseInt(timeStep.getText()),
+                                    true, true)
+                ));
+        mTable.setItems(data);
+        initCharts(data);
     }
 
-    private void initChart(ObservableList<BsWfsElement> obsData) {
-
-
-        xAxis.setCategories(
-                FXCollections.observableList(
-                        obsData.stream()
-                                .map(BsWfsElement::getTime)
-                                .collect(Collectors.toList())));
-
-        xScatter.setCategories(
-                FXCollections.observableList(
-                        obsData.stream()
-                                .map(BsWfsElement::getTime)
-                                .collect(Collectors.toList())));
+    private void initCharts(ObservableList<BsWfsElement> obsData) {
 
         // Add data to the chart
         XYChart.Series<String, Double> tempSeries = new XYChart.Series<>();
+        XYChart.Series<String, Double> windSeries = new XYChart.Series<>();
         tempSeries.setName("Temperature");
-        for (BsWfsElement e : obsData)
-            tempSeries.getData().add(new XYChart.Data<>(e.getTime(), e.getParameter_value()));
+        windSeries.setName("Windspeed");
+        for (BsWfsElement e : obsData) {
+            if (e.getParameter_name().equals("temperature"))
+                tempSeries.getData().add(new XYChart.Data<>(formatIsoDate(e.getTime()),
+                                                            e.getParameter_value()));
+            else
+                windSeries.getData().add(new XYChart.Data<>(formatIsoDate(e.getTime()),
+                                                            e.getParameter_value()));
+        }
 
-        mChart.getData().add(tempSeries);
-        mScatter.getData().add(tempSeries);
+        mChart.getData().addAll(tempSeries, windSeries);
     }
 
     /**
@@ -125,28 +142,16 @@ public class PrimaryController implements Initializable {
                         new SimpleStringProperty(""+m.getValue().getParameter_value()) :
                         new SimpleStringProperty("No parameter value"));
 
-        mChart.setTitle("Temperature Forecast Data");
-        mChart.setLegendVisible(false);
+        mChart.setTitle("Weather Forecast Data");
         mChart.setCreateSymbols(false);
 
-        xAxis.setLabel("Time");
-        yAxis.setLabel("Temperature");
-        // TODO: 9/16/2022 Make it so that these values are in relation to the min/max fetched parameter values.
-        yAxis.setAutoRanging(false);
-        yAxis.setLowerBound(-15);
-        yAxis.setUpperBound(15);
-        yAxis.setTickUnit(3);
+        xAxis.setAnimated(false);
+        yAxis.setAnimated(false);
+    }
 
-        mScatter.setTitle("Temperature Forecast Data");
-        mScatter.setLegendVisible(false);
-
-        xScatter.setLabel("Time");
-        yScatter.setLabel("Temperature");
-        // TODO: 9/16/2022 Make it so that these values are in relation to the min/max fetched parameter values.
-        yScatter.setAutoRanging(false);
-        yScatter.setLowerBound(0);
-        yScatter.setUpperBound(15);
-        yScatter.setTickUnit(3);
-
+    private String formatIsoDate(String date) {
+        return date.substring(5)
+                    .replace("T", "\n")
+                   .replace("Z", "");
     }
 }

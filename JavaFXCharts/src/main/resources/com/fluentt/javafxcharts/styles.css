@@ -1,5 +1,5 @@
 .root{
-    -fx-background-color: #16213E;
+    -fx-background-color: linear-gradient(to bottom right, #43cea2, #185a9d);
     -fx-text-fill: white;
 }
 .button {
@@ -38,7 +38,6 @@
 
 .table-view .table-cell{
     -fx-border-color: transparent;
-    -fx-text-background-color: white;
     -fx-padding: 2 0 2 10px;
 }
 .table-row-cell: hover {
@@ -85,4 +84,8 @@
 
 .chart-plot-background {
     -fx-background-color: transparent;
+}
+
+.chart-legend {
+   -fx-background-color:  transparent;
 }
